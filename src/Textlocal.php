@@ -23,7 +23,6 @@ class Textlocal
     const REQUEST_HANDLER = 'curl';
 
     private $request_url;
-    private $country;
 
     private $username;
     private $hash;
@@ -37,6 +36,8 @@ class Textlocal
     public $lastRequest = [];
     public $treatAsUnicode = 0;
 
+    public $defaultSender;
+
     /**
      * Instantiate the object.
      *
@@ -44,16 +45,17 @@ class Textlocal
      * @param $hash
      * @param string|null $apiKey
      */
-    public function __construct($username, $hash, $apiKey = null)
+    public function __construct(string $sender, string $requestUrl, $username, $hash, $apiKey = null)
     {
+        $this->defaultSender = $sender;
+
         $this->username = $username;
         $this->hash = $hash;
         if (! is_null($apiKey)) {
             $this->apiKey = $apiKey;
         }
 
-        $this->country = config('textlocal.country');
-        $this->request_url = config('textlocal.request_urls')[$this->country];
+        $this->request_url = $requestUrl;
     }
 
     /**
@@ -118,7 +120,8 @@ class Textlocal
         // Initialize handle
         $ch = curl_init($url);
         curl_setopt_array(
-            $ch, [
+            $ch,
+            [
             CURLOPT_POST           => true,
             CURLOPT_POSTFIELDS     => $params,
             CURLOPT_RETURNTRANSFER => true,
@@ -181,7 +184,7 @@ class Textlocal
      *
      * @return array|mixed
      */
-    public function sendSms($numbers, $message, $sender, $sched = null, bool $test = false, $receiptURL = null, $custom = null, $optouts = false, $simpleReplyService = false)
+    public function sendSms($numbers, $message, $sender = null, $sched = null, bool $test = false, $receiptURL = null, $custom = null, $optouts = false, $simpleReplyService = false)
     {
         if (! is_array($numbers)) {
             throw new Exception('Invalid $numbers format. Must be an array');
@@ -189,8 +192,9 @@ class Textlocal
         if (empty($message)) {
             throw new Exception('Empty message');
         }
-        if (empty($sender)) {
-            throw new Exception('Empty sender name');
+        if (empty($sender) || is_null($sender)) {
+            $sender = $this->defaultSender;
+            //throw new Exception('Empty sender name');
         }
         if (! is_null($sched) && ! is_numeric($sched)) {
             throw new Exception('Invalid date format. Use numeric epoch format');
@@ -236,8 +240,9 @@ class Textlocal
         if (empty($message)) {
             throw new Exception('Empty message');
         }
-        if (empty($sender)) {
-            throw new Exception('Empty sender name');
+        if (empty($sender) || is_null($sender)) {
+            $sender = $this->defaultSender;
+            //throw new Exception('Empty sender name');
         }
         if (! is_null($sched) && ! is_numeric($sched)) {
             throw new Exception('Invalid date format. Use numeric epoch format');
@@ -785,7 +790,7 @@ class Textlocal
     
     /**
      * Set unicode mode
-     * 
+     *
      * @param bool $mode
      * @return \NotificationChannels\Textlocal\Textlocal
      */

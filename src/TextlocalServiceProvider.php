@@ -19,7 +19,11 @@ class TextlocalServiceProvider extends ServiceProvider
                 function () {
                     $config = config('textlocal');
 
+                    $requestUrl = $config['request_urls'][$config['country']];
+
                     return new Textlocal(
+                        $config['sender'],
+                        $requestUrl,
                         $config['username'],
                         $config['hash'],
                         $config['api_key']

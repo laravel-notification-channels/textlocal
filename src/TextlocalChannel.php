@@ -13,7 +13,7 @@ use NotificationChannels\Textlocal\Exceptions\CouldNotSendNotification;
 class TextlocalChannel
 {
     private $client;
-    private $sender;
+    private $sender = null;
 
     /**
      * creates a textlocal channel object by using the configs
@@ -23,7 +23,6 @@ class TextlocalChannel
     public function __construct(Textlocal $client)
     {
         $this->client = $client;
-        $this->sender = config('textlocal.sender');
     }
 
     /**
@@ -59,7 +58,7 @@ class TextlocalChannel
         // Get unicode parameter from notification class
         $unicode = false;
         if (method_exists($notification, 'getUnicodeMode')) {
-            $unicode = $notification->getUnicodeMode();
+            $unicode = (bool) $notification->getUnicodeMode();
         }
 
         if (method_exists($notification, 'getSenderId')) {

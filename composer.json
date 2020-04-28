@@ -1,6 +1,13 @@
 {
     "name": "msonowal/laravel-notification-channel-textlocal",
     "description": "Textlocal Notifications Channel for Laravel",
+    "keywords": [
+        "laravel",
+        "notifications",
+        "textlocal",
+        "sms",
+        "india"
+    ],
     "homepage": "https://github.com/laravel-notification-channels/textlocal",
     "license": "MIT",
     "authors": [
@@ -14,8 +21,8 @@
     "require": {
         "php": ">=7.0",
         "ext-json": "*",
-        "illuminate/notifications": "~5.5|~6.0",
-        "illuminate/support": "~5.5|~6.0"
+        "illuminate/notifications": "~5.5|^6.0|^7.0",
+        "illuminate/support": "~5.5|^6.0|^7.0"
     },
     "require-dev": {
         "mockery/mockery": "^0.9.5|^1.0",
