@@ -759,11 +759,11 @@ class Textlocal
      *
      * @return array|mixed
      */
-    public function getSurveyDetails()
+    public function getSurveyDetails($surveyid)
     {
         $options = ['survey_id' => $surveyid];
 
-        return $this->_sendRequest('get_survey_details');
+        return $this->_sendRequest('get_survey_details', $options);
     }
 
     /**

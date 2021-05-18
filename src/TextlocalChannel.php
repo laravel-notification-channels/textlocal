@@ -6,10 +6,15 @@ use Illuminate\Notifications\Notification;
 use NotificationChannels\Textlocal\Exceptions\CouldNotSendNotification;
 
 /**
- * Textlocal channel class which is used to interact with core
+ * Textlocal channel class which is used to interact with core.
+ *
  * textlocal sdk and faciliate to send sms via
  * laravel notification system
+ *
+ * @author     Manash Sonowal <manash149@gmail.com>
+ *
  */
+
 class TextlocalChannel
 {
     private $client;
